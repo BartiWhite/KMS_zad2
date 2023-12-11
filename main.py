@@ -5,10 +5,11 @@ import tqdm
 dx = 0.05
 dt = 0.002
 x = np.arange(-5, 50 + dx, dx)
+dk = 1.5
+imaginary = bool(1)
 
 
 def psi0(x):
-    dk = 1.5
     k0 = 10
     return np.sqrt(dk) * np.exp(-x ** 2 * dk ** 2 / 2) * np.exp(1j * k0 * x) / np.pi ** (1 / 4)
 
@@ -25,7 +26,6 @@ def get_diagonal_matrix(b, a_c):
 
 
 def r_vec_i(psi_jm1, psi_j, psi_jp1, vj):
-    # return psi_j + 1j * dt * ((psi_jp1 - 2 * psi_j + psi_jm1) / (dx ** 2) + psi_j) / 2
     return psi_j + 1j * dt * ((psi_jp1 - 2 * psi_j + psi_jm1) / (dx ** 2) + vj * psi_j) / 2
 
 
@@ -40,7 +40,6 @@ def animate_wave(index):
 psiStart = psi0(x)
 
 b = 1 + 1j * dt * (2 / (dx ** 2) + V(x)[1:-1]) / 2
-# b = 1 + 1j * dt * (2 / (dx ** 2)) / 2
 a_c = -1j * dt * np.ones(len(b) - 1) / (2 * dx ** 2)
 
 AMatrix = get_diagonal_matrix(b, a_c)
@@ -56,11 +55,13 @@ for i in tqdm.tqdm(range(J)):
 
 
 fig, ax = plt.subplots()
-ln1, = ax.plot(x, np.absolute(psi0(x))**2, 'r-')
+ln1, = ax.plot(x.real, np.absolute(psi0(x))**2, 'r-')
 ln2 = ax.plot(x, V(x)/100)
 ax.set_ylim(-1, 2)
 ax.set_xlim(-5, 50)
+title = 'PLot for dk = ' + str(dk) + ', ' + (str('real') if imaginary == 0 else str('imaginary')) + ' x axis values and without potential V'
+plt.title(title)
 plt.tight_layout()
 ani = animation.FuncAnimation(fig, animate_wave, frames=J, interval=1)
 
-ani.save('wave.gif', writer='pillow', fps=30, dpi=200)
+ani.save(title + '.gif', writer='pillow', fps=30, dpi=200)

@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/kms_zad2.iml" filepath="$PROJECT_DIR$/.idea/kms_zad2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../plotsForBucketBrigade/.idea/plotsForBucketBrigade.iml" filepath="$PROJECT_DIR$/../plotsForBucketBrigade/.idea/plotsForBucketBrigade.iml" />
     </modules>
   </component>
 </project>
